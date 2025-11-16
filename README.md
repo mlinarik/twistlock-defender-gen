@@ -6,6 +6,21 @@ Files added:
 - `scripts/install-defender.sh` — Bash script for Linux/macOS (interactive, prompts for options and can create a systemd service)
 - `scripts/install-defender.ps1` — PowerShell script for Windows (interactive, prompts for options)
 
+New behavior
+
+- The Bash script `scripts/install-defender.sh` now supports generating Kubernetes or OpenShift manifests interactively instead of running a container locally. When you run the script it will ask whether you want Docker (existing behavior) or Kubernetes/OpenShift manifests.
+- Generated manifests are written to `manifests/<platform>-<name>/` (for example `manifests/kubernetes-tw-defender/`). The set includes a Namespace, ServiceAccount, ClusterRole, ClusterRoleBinding and a DaemonSet YAML. For OpenShift the script adds a notes file with `oc` instructions to bind the service account to the `privileged` SCC.
+
+Usage examples (generate manifests)
+
+```bash
+chmod +x scripts/install-defender.sh
+./scripts/install-defender.sh
+# choose manifests when prompted, select 'kubernetes' or 'openshift'
+# the YAML will be saved under manifests/<platform>-<name>/
+kubectl apply -f manifests/kubernetes-tw-defender/
+```
+
 Quick start
 
 Linux / macOS (bash):
